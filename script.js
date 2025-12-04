@@ -2,6 +2,8 @@ const submitButton = document.getElementById('submit');
 const newTask = document.getElementById('new-task-input');
 const newTaskDescription = document.getElementById('new-task-descr-input');
 const taskList = document.querySelector('.taskList');
+const taskLine = document.querySelector('.taskLine');
+const taskInfos = document.querySelector('.taskInfos');
 const undoneButton = document.getElementById('undone');
 const doneButton = document.getElementById('done');
 const allButton = document.getElementById('all');
@@ -13,22 +15,28 @@ let myTask = {
   description: '',
   completed: false
 }
-let taskBase = `<li class="taskItem">
-                  <div class="taskLine">
-                    <input type="checkbox">
-                    <p class="taskTitle">title</p>
-                    <i class="ph ph-trash delete" id="delete"></i>
-                  </div>
-                  <div class="taskInfos">
-                    <p class="taskDescription">description</p>
-                  </div>
-                </li>`;
+let taskBase = `<div class="taskLine">
+                  <input type="checkbox">
+                  <p class="taskTitle">title</p>
+                  <i class="ph ph-trash delete" id="delete"></i>
+                </div>
+                <div class="taskInfos">
+                  <p class="taskDescription">description</p>
+                </div>`;
 
 function generateTaskHTML(task) {
-  return taskBase.replace('title', task.title).replace('description', task.description);
+  return taskBase
+  .replace('title', task.title)
+  .replace('description', task.description);
 
 }
+function createLi(myTask) {
+  const li = document.createElement('li');
+      li.className = 'taskItem';
+      li.innerHTML = generateTaskHTML(myTask);
+      return li;
 
+}
 
 
 // * CREER UNE TACHE
@@ -39,14 +47,15 @@ submitButton.addEventListener("click", () =>{
     return;
   }
   taskList.textContent = ''; // vide la liste
-  tasks.push({
+  tasks.push({         // crée la nouvelle tache
     title: newTask.value,
     description: newTaskDescription.value,
-    completed: false }); // crée la nouvelle tache
+    completed: false });
+
+    console.log(tasks)
   tasks.forEach((task) => {
 
-    const li = document.createElement('li');
-    li.innerHTML = generateTaskHTML(task);
+    const li = createLi(task);
 
     const checkbox = li.querySelector('input[type="checkbox"]'); // Restaure l'état de la checkbox
     checkbox.checked = task.completed;
@@ -76,14 +85,15 @@ taskList.addEventListener('click', (event) => {
 // ? VALIDER UNE TACHE
 taskList.addEventListener('change', (event) => {
   if (event.target.type === 'checkbox') {
-    const taskLine = event.target.closest('.taskLine');
-    const taskTitle = taskLine.querySelector('p').textContent;
-    const taskInfos = taskLine.nextElementSibling;
+    const taskItem = event.target.closest('.taskItem'); // Trouve l'élément de tâche parent
+    const taskTitleElement = taskItem.querySelector('.taskTitle'); // Trouve le titre de la tâche
+    const taskTitle = taskTitleElement.textContent; // Récupère le texte du titre
+
+    // Trouve la tâche correspondante dans le tableau `tasks`
     const task = tasks.find(t => t.title === taskTitle);
     if (task) {
-      task.completed = event.target.checked;      // Met à jour l'objet dans `tasks`
-      taskLine.classList.toggle('completed', event.target.checked);
-      taskInfos.classList.toggle('completed', event.target.checked);
+      task.completed = event.target.checked; // Met à jour l'objet dans `tasks`
+      taskItem.classList.toggle('completed', event.target.checked);
     }
   }
 });
@@ -95,8 +105,7 @@ undoneButton.addEventListener('click', () => {
   tasks
     .filter(task => !task.completed)
     .forEach(task => {
-      const li = document.createElement('li');
-      li.innerHTML = generateTaskHTML(task)
+      const li = createLi(task);
 
       taskList.appendChild(li);
     });
@@ -108,8 +117,9 @@ doneButton.addEventListener('click', () => {
     .filter(task => task.completed)
     .forEach(task => {
       const li = document.createElement('li');
-      li.classList.add('completed');
+      li.className = 'taskItem';
       li.innerHTML = generateTaskHTML(task);
+      li.classList.add('completed');
       const checkbox = li.querySelector('input[type="checkbox"]');
       checkbox.checked = true; // Coche la checkbox
       taskList.appendChild(li);
@@ -117,11 +127,10 @@ doneButton.addEventListener('click', () => {
 });
 
 allButton.addEventListener('click', () => {
-  //TODO fix bug. sur le click done/undone puis all, les taches faites ne sont pas barrées
   taskList.textContent = '';
   tasks.forEach(task => {
-    const li = document.createElement('li');
-    li.innerHTML = generateTaskHTML(task);
+    const li = createLi(task);
+
     const checkbox = li.querySelector('input[type="checkbox"]');
     checkbox.checked = task.completed; // Coche la checkbox si la tâche est complétée
     if (task.completed) {
