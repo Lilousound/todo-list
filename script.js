@@ -1,6 +1,7 @@
 const submitButton = document.getElementById('submit');
 const newTask = document.getElementById('new-task-input');
 const newTaskDescription = document.getElementById('new-task-descr-input');
+const newTaskDate = document.getElementById('new-task-date-input');
 const taskList = document.querySelector('.taskList');
 const taskLine = document.querySelector('.taskLine');
 const taskInfos = document.querySelector('.taskInfos');
@@ -10,11 +11,12 @@ const allButton = document.getElementById('all');
 
 
 let tasks = [];
-let myTask = {
-  title: '',
-  description: '',
-  completed: false
-}
+// let myTask = {
+//   title: '',
+//   description: '',
+//   dueDate: '',
+//   completed: false
+// }
 let taskBase = `<div class="taskLine">
                   <input type="checkbox">
                   <p class="taskTitle">title</p>
@@ -22,12 +24,14 @@ let taskBase = `<div class="taskLine">
                 </div>
                 <div class="taskInfos">
                   <p class="taskDescription">description</p>
+                  <p class="taskDate">Due date: dueDate</p>
                 </div>`;
 
 function generateTaskHTML(task) {
   return taskBase
   .replace('title', task.title)
-  .replace('description', task.description);
+  .replace('description', task.description)
+  .replace('dueDate', task.dueDate);
 
 }
 function createLi(myTask) {
@@ -35,7 +39,6 @@ function createLi(myTask) {
       li.className = 'taskItem';
       li.innerHTML = generateTaskHTML(myTask);
       return li;
-
 }
 
 
@@ -50,9 +53,9 @@ submitButton.addEventListener("click", () =>{
   tasks.push({         // crée la nouvelle tache
     title: newTask.value,
     description: newTaskDescription.value,
+    dueDate: newTaskDate.value,
     completed: false });
 
-    console.log(tasks)
   tasks.forEach((task) => {
 
     const li = createLi(task);
@@ -66,6 +69,7 @@ submitButton.addEventListener("click", () =>{
   })
   newTask.value = '';
   newTaskDescription.value = '';
+  newTaskDate.value = '';
 
 })
 
