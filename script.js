@@ -20,7 +20,8 @@ let tasks = [];
 let taskBase = `<div class="taskLine">
                   <input type="checkbox">
                   <p class="taskTitle">title</p>
-                  <i class="ph ph-trash delete" id="delete"></i>
+                  <i class="ph ph-pencil edit"></i>
+                  <i class="ph ph-trash delete"></i>
                 </div>
                 <div class="taskInfos">
                   <p class="taskDescription">description</p>
@@ -82,6 +83,33 @@ taskList.addEventListener('click', (event) => {
     tasks = tasks.filter(task => task.title !== taskTitle); // Retire la tâche du tableau des tâches
 
     taskItem.remove(); // Retire l'élément de la liste du DOM
+  }
+});
+
+// * MODIFIER UNE TACHE
+taskList.addEventListener('click', (event) => {
+  if (event.target.classList.contains('edit')) {
+    const taskItem = event.target.closest('.taskItem');
+    const taskTitle = taskItem.querySelector('.taskTitle').textContent; // Récupère le titre de la tâche
+    const taskElement = event.target.closest(".taskLine");
+    const taskDescription = taskElement.nextElementSibling.querySelector(".taskDescription").textContent;
+    const taskDate = taskElement.nextElementSibling.querySelector(".taskDate").textContent.replace("Due date: ", "");
+
+    const task = tasks.find(t => t.title === taskTitle); // Trouve la tâche correspondante dans le tableau `tasks`
+    if (task) {
+      newTask.value = taskTitle; // Remplit les champs d'entrée avec les valeurs actuelles de la tâche
+      newTaskDescription.value = taskDescription;
+      newTaskDate.value = taskDate;
+
+      taskItem.remove();; // Supprime l'élément de la liste du DOM
+      tasks = tasks.filter(t => t.title !== taskTitle); // Retire la tâche du tableau des tâches
+
+      // Met à jour l'objet tâche avec les nouvelles valeurs
+      task.title = newTask.value;
+      task.description = newTaskDescription.value;
+      task.dueDate = newTaskDate.value;
+      taskItem.innerHTML = generateTaskHTML(task); // Met à jour l'élément de tâche avec les nouvelles valeurs
+    }
   }
 });
 
