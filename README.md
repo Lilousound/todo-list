@@ -28,6 +28,14 @@ Perfect for learning **DOM manipulation**, **event handling**, and **local stora
 | **JavaScript** | Core logic: task management, DOM updates, and local storage. |
 
 ---
+## **🎨 Features**
+
+- **Add tasks**: Type and press "Enter" to add a new task.
+- **Complete tasks**: Click the checkbox to mark as done.
+- **Edit tasks**: Click the pencil to enter edition.
+- **Delete tasks**: Click the trash icon to remove a task.
+
+---
 ## 📧 **Get in Touch**
 Have questions, suggestions, or just want to chat about the project?
 **I’d love to hear from you!** 😊
