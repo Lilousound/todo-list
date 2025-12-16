@@ -42,5 +42,7 @@ Have questions, suggestions, or just want to chat about the project?
 
 📩 **Email me at**: [aurelieraout@gmail.com](mailto:aurelieraout@gmail.com)
 
+🌐 **Visit my portfolio**: www.aurelieraout.com
+
 Whether it’s feedback, collaboration ideas, or even a friendly "hello," don’t hesitate to reach out!
 ---
