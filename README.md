@@ -16,7 +16,7 @@ This **Todo List App** allows users to:
 - **Delete** tasks.
 - **Filter** tasks (all, active, completed).
 
-Perfect for learning **DOM manipulation**, **event handling**, and **local storage** in JavaScript.
+What i have learned: **DOM manipulation**, **event handling**, and **local storage** in JavaScript.
 
 ---
 
